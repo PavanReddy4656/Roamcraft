@@ -184,11 +184,20 @@ const CreateTrip = () => {
 
   const SaveAiTrip = async (TripData) => {
     setLoading(true);
+    let parsed;
+    try {
+      parsed = JSON.parse(TripData);
+    } catch (e) {
+      console.error("Failed to parse AI response:", e);
+      toast("Trip generation failed, please try again");
+      setLoading(false);
+      return;
+    }
     const user = JSON.parse(localStorage.getItem("user"));
     const docId = Date.now().toString();
     await setDoc(doc(db, "AITrips", docId), {
       userChoice: formData,
-      tripData: JSON.parse(TripData),
+      tripData: parsed,
       userEmail: user?.email,
       id: docId,
     });
