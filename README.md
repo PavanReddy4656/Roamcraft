@@ -51,7 +51,7 @@
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/roamcraft.git
+git clone https://github.com/PavanReddy4656/roamcraft.git
 cd roamcraft
 npm install
 ```
@@ -79,7 +79,6 @@ VITE_GOOGLE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`.
 
 ---
 
