@@ -1,5 +1,7 @@
 # RoamCraft ✈️ — AI Trip Planner
 
+🌐 **Live Demo**: [roamcraft.vercel.app](https://roamcraft.vercel.app)
+
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-5.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
