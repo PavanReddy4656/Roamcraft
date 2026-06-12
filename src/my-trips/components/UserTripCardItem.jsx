@@ -1,35 +1,65 @@
-import { PHOTO_REF_URL } from "@/constants/options";
-import { GetPlaceDetails } from "@/service/GlobalApi";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const UserTripCardItem = ({ trip }) => {
-  const [photoURL, setPhotoURL] = useState();
+const PLACEHOLDER = "https://placehold.co/400x300?text=🌍+Trip";
 
-  const GetPlacePhoto = async () => {
-    const data = {
-      textQuery: trip?.userChoice?.location?.label,
-    };
-    const result = await GetPlaceDetails(data).then((resp) => {
-      console.log(resp.data.places[1].photos[1].name);
-      const Url = PHOTO_REF_URL.replace(
-        "{NAME}",
-        resp.data.places[1].photos[1].name
-      );
-      setPhotoURL(Url);
-    });
-  };
+const UserTripCardItem = ({ trip }) => {
+  const [photoUrl, setPhotoUrl] = useState(PLACEHOLDER);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    trip && GetPlacePhoto();
+    if (!trip) return;
+
+    const fetchPhoto = async () => {
+      try {
+        const query =
+          trip?.userChoice?.location?.label || trip?.userChoice?.location;
+        if (!query) return;
+
+        const res = await fetch(
+          "https://places.googleapis.com/v1/places:searchText",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": import.meta.env.VITE_GOOGLE_PLACE_API_KEY,
+              "X-Goog-FieldMask": "places.photos",
+            },
+            body: JSON.stringify({ textQuery: query }),
+          }
+        );
+
+        const data = await res.json();
+        const photoName = data?.places?.[0]?.photos?.[0]?.name;
+
+        if (photoName) {
+          setPhotoUrl(
+            `https://places.googleapis.com/v1/${photoName}/media?maxHeightPx=600&maxWidthPx=600&key=${import.meta.env.VITE_GOOGLE_PLACE_API_KEY}`
+          );
+        }
+      } catch (err) {
+        console.error("Failed to fetch place photo:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPhoto();
   }, [trip]);
+
   return (
     <Link to={"/view-trip/" + trip?.id}>
       <div className="hover:scale-105 transition-all hover:shadow-md">
-        <img
-          className="object-cover rounded-xl w-full h-64"
-          src={photoURL}
-        />
-        <h2 className="font-bold text-lg dark:text-white">
+        {loading ? (
+          <div className="w-full h-48 rounded-t-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+        ) : (
+          <img
+            className="w-full h-48 object-cover rounded-t-xl"
+            src={photoUrl}
+            alt={trip?.userChoice?.location?.label || "Trip"}
+          />
+        )}
+        <h2 className="font-bold text-lg dark:text-white mt-2">
           {trip?.userChoice?.location?.label}
         </h2>
         <h2 className="text-sm text-gray-500 dark:text-gray-400">
