@@ -50,7 +50,17 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 overflow-hidden px-4">
+    <div
+      className="relative flex flex-col items-center justify-center bg-cover bg-center overflow-hidden px-4"
+      style={{
+        backgroundImage: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2000&q=80')",
+        backgroundSize: "cover",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-blue-950/50 to-indigo-900/70" />
+
       {/* Decorative blurred circles */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500 rounded-full opacity-20 blur-3xl" />
       <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-purple-600 rounded-full opacity-20 blur-3xl" />
